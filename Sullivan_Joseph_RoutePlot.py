@@ -257,7 +257,7 @@ while completed == False:
             #GRID PLOTTING PHASE
             
             #INITIAL GRID
-            start_place_marker(board, sp_N, sp_E, 'x')
+            start_place_marker(map_grids, sp_N, sp_E, 'x')
 
             
             while game_on == True:
