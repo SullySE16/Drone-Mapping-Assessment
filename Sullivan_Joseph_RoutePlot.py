@@ -1,5 +1,6 @@
 # Drone-Mapping-Assessment
 # This was the first validation of my skill set as a python programmer. I'd appreciate any feedback. 
+# !!!  THIS VERSION IS FOR MACOS/LINUX OPERATING SYSTEMS ONLY  !!!
 
 from IPython.display import clear_output
 
@@ -62,10 +63,10 @@ def file_name():
     
     while finish == False:
         
-        file = (input('Please input file name or STOP:')).lower()
+        file = (input('Please input file name or STOP:'))
         
         #STOP FUNCTION
-        if file == 'stop':
+        if file == 'STOP':
             
             finish = True
         
@@ -74,8 +75,15 @@ def file_name():
             
             #USING EXCEPTION HANDLING TO AVOID SYNTAX ERRORS BREAKING THE WHILE LOOP.
             try:
+                RootDir = '/'
+                for relPath,dirs,files in os.walk(RootDir):
+                    if(file in files):
+                        FullPath = os.path.join(RootDir, relPath, file)
+                        
+    
                 
-                f = open(f'/Users/Joseph/Desktop/Coding/{file}', "r", encoding = "UTF-8")
+                
+                f = open(FullPath, "r", encoding = "UTF-8")
                 
                 #READING THE COORDINATES
                 read_coordinates = f.readlines()
