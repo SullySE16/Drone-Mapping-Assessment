@@ -3,6 +3,7 @@
 # !!!  THIS VERSION IS FOR MACOS/LINUX OPERATING SYSTEMS ONLY  !!!
 
 from IPython.display import clear_output
+import os
 
 #THE MAP
 N0 = ['#']    
