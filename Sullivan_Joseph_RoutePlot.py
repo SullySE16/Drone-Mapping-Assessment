@@ -1,9 +1,10 @@
 # Drone-Mapping-Assessment
 # This was the first validation of my skill set as a python programmer. I'd appreciate any feedback. 
-# !!!  THIS VERSION IS FOR MACOS/LINUX OPERATING SYSTEMS ONLY  !!!
+
 
 from IPython.display import clear_output
 import os
+import platform
 
 #THE MAP
 N0 = ['#']    
@@ -67,7 +68,7 @@ def file_name():
         file = (input('Please input file name or STOP:'))
         
         #STOP FUNCTION
-        if file == 'STOP':
+        if file.lower() == 'stop':
             
             finish = True
         
@@ -76,7 +77,10 @@ def file_name():
             
             #USING EXCEPTION HANDLING TO AVOID SYNTAX ERRORS BREAKING THE WHILE LOOP.
             try:
-                RootDir = '/'
+                if platform.system() == 'Windows': 
+                    RootDir = 'C:\\'
+                else:
+                    RootDir = '/'
                 for relPath,dirs,files in os.walk(RootDir):
                     if(file in files):
                         FullPath = os.path.join(RootDir, relPath, file)
