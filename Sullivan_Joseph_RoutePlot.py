@@ -78,7 +78,7 @@ def file_name():
             #USING EXCEPTION HANDLING TO AVOID SYNTAX ERRORS BREAKING THE WHILE LOOP.
             try:
                 if platform.system() == 'Windows': 
-                    RootDir = 'C:\'
+                    RootDir = 'C:\\'
                 else:
                     RootDir = '/'
                 for relPath,dirs,files in os.walk(RootDir):
