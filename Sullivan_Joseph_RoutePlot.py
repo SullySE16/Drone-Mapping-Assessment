@@ -67,33 +67,28 @@ def file_name():
         
         file = (input('Please input file name or STOP:'))
         
-        #STOP FUNCTION
         if file.lower() == 'stop':
             
             finish = True
         
-        #OPENING THE FILE
         else:
             
-            #USING EXCEPTION HANDLING TO AVOID SYNTAX ERRORS BREAKING THE WHILE LOOP.
             try:
                 if platform.system() == 'Windows': 
-                    RootDir = 'C:\\'
+                    OS = r"\""
+                
                 else:
-                    RootDir = '/'
-                for relPath,dirs,files in os.walk(RootDir):
-                    if(file in files):
-                        FullPath = os.path.join(RootDir, relPath, file)
-                        
+                    OS = '/'
+
+                file_location = os.getcwd()
+                cwd = os.getcwd()
+                file_location = cwd+OS+file                        
     
+                f = open(file_location, "r", encoding = "UTF-8")
                 
                 
-                f = open(FullPath, "r", encoding = "UTF-8")
-                
-                #READING THE COORDINATES
                 read_coordinates = f.readlines()
                 
-                #EXTRACTING THE COORDINATES AND ASSIGNING THEM TO X,Y(START POSITION) AND DIRECTIONS
                 coordinates = []  
 
                 for num in read_coordinates:
@@ -107,36 +102,28 @@ def file_name():
 
                 return x,y, directions, file
             
-            #IF SYNTAX ERROR OCCURS, EXCEPT WILL MAINTAIN THE WHILE LOOP
             except:
                 clear_output()
                 print('File Not Found')
-            
-    #IF STOP IS CALLED, FINISH WILL RETURN 'TRUE'    
+             
     else:
         return finish    
       
       
-#START POSITION, USING X,Y FROM FILE_NAME() FUNCTION
 
 def start_place_marker(board, N, E, marker):
     board[N][E] = marker
 
-    
-#DIRECTIONS THAT FOLLOW THE START POSITION.
 
 def direction_func(directions):
     
-    #'VALID' = VALIDATE IF A DIRECTION IS INVALID OR OUT OF BOUNDS
+    
     valid = True
-    #'FINISH' = DIRECTIONS VALID AND WILL RETURN THE ROUTE
     finish = False
     
-    #VARIABLES
     navigation = ['N','E','S','W']
     route = []
     
-    #START POINT (NORTH AND SOUTH) ARE DEFINED ONCE THE X,Y ARE CALLABLE
     position_N = sp_N
     position_E = sp_E
     
@@ -159,21 +146,19 @@ def direction_func(directions):
                     position_E = position_E-1 
                     
                 
-                #VALIDATE OUT OF BOUNDS
+                
                 if position_N not in range(1,13) or position_E not in range(1,13):
                     valid = False
                 
-                #VALIDATE DIRECTION
+                
                 else:
                     if num not in navigation:
                         valid = False
                     
-                    #VALIDATE DIRECTIONS ONLY MOVE VERTICALLY AND HORIZONTALLY AND IDENTIFY FAULTS IN FILE ie.'NZ'
                     else:   
                         if len(num)>1:
                             valid = False
                         
-                        #DIRECTION IS VALID - ADD GRID POSITION TO A 'COORDINATES' LIST AND REMOVE FROM 
                         else:
                         
                             coordinates = position_E, position_N
@@ -182,32 +167,23 @@ def direction_func(directions):
 
                             route.extend([coordinates])
                             
-                            #ENSURES EVERY DIRECTION HAS BEEN TESTED AND TESTED ONLY ONCE
                             if len(directions)== 0:
 
                                 finish = True
     
 
     else:
-        #BOOLEN 'FALSE' WILL BE CALLED TO REPORT AN ERROR
         if valid == False:
             return valid
         
-        #RETURNS ROUTE (LISTED TUPLES)
         else:
             return route
             
 
-            
-#PLACE HOLDER FUNCTION
 
 def place_marker(map_grids, y, x, marker):
     map_grids[y][x] = marker
 
-    
-    
-
-#'COMPLETED' = TRUE WILL BE TRIGGERED ONCE 'STOP' IS CALLED. THEREFORE DICTATE THE PRIMARY WHILE LOOP.
 
 completed = False
 while completed == False:
@@ -245,21 +221,18 @@ while completed == False:
     #PLOTTING COORDINATES    
     else:
         
-        #EXTRACTING ASSIGNING OUTPUTS FROM 'FILE_NAME()' FUNCTION - X,Y,DIRECTIONS
         x = f_name[0]
         y = f_name[1]
         directions = f_name[2]
         
         starting_position = x, y
         
-        #IDENTIFY INITIAL EASTING AND NORTHING
         sp_E = starting_position[0]  
         sp_N = starting_position[1]
         
-        #RUNNING 'DRIECTION_FUNC' TO MAKE ROUTE CALLABLE OR RETURN ERROR.
         move_position = direction_func(directions)  
         
-        #VALIDATIING MOVE POSITIONS (DIRECTION_FUNC)
+
         if move_position == False:
             clear_output()
             print('Error: The route is outside of the grid.')
@@ -267,36 +240,28 @@ while completed == False:
             
         
         else:
-            #GRID PLOTTING PHASE
-            
-            #INITIAL GRID
+
             start_place_marker(map_grids, sp_N, sp_E, 'x')
 
             
             while game_on == True:
                 
-                #CALLS NUM IN TUPLE WITHIN 'ROUTE' LIST FROM DIRECTION_FUNC(), ASSINGS EASTING AND NORTHING
                 move_positionE = move_position[0][0]
                 move_positionN = move_position[0][1]
                 
-                #PLOT ROUTE ON MAP
                 place_marker(map_grids, move_positionN, move_positionE, 'x')
                 
-                #POSITIONS ADDED TO ROUTE TO BE PRINTED IN OUTPUT
                 route.extend((move_positionE, move_positionN))
                 move_position.pop(0)
                 
-                #VALIDATES WHEN ALL POSITIONS HAVE BEEN PLOTTED
                 if len(move_position) == 0:
                     game_on = False
                     
-                    #OUTPUT DISPLAY ORDER
                     clear_output()
                     print(f_name[3])
                     visual_map(map_grids)
                     print('Coordinates')
 
-            #PRINTS ROUTE IN GRID REFERENCES
             while output == False:
                 print(route[0],route[1])
                 route.pop(0)
