@@ -111,6 +111,9 @@ def file_name():
       
       
 
+
+
+
 def start_place_marker(board, N, E, marker):
     board[N][E] = marker
 
@@ -261,6 +264,7 @@ while completed == False:
                     print(f_name[3])
                     visual_map(map_grids)
                     print('Coordinates')
+                    print(x,y)
 
             while output == False:
                 print(route[0],route[1])
